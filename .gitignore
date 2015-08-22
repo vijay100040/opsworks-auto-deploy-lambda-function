@@ -1,0 +1,8 @@
+node_modules
+dist
+.ignore*
+.env
+index_basic.js
+test.js
+event.json
+eventMonitor.json

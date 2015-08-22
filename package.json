@@ -1,0 +1,30 @@
+{
+  "name": "blue-green-deployer",
+  "version": "0.1.0",
+  "description": "Blue-Green deploy helper lambda function. This function uses OpsWorks to get most work done",
+  "main": "index.js",
+  "private": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blue-green",
+    "deployment",
+    "opsworks",
+    "lambda"
+  ],
+  "author": "Vijay <vijay@bambeeq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.4.2",
+    "aws-sdk": "^2.1.45",
+    "dotenv": "^1.2.0",
+    "dynamodb-doc": "^1.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-aws-lambda": "^0.0.1",
+    "grunt-contrib-jshint": "^0.11.2",
+    "jshint": "^2.8.0"
+  }
+}
