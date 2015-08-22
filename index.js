@@ -13,6 +13,7 @@ actions = {
 var config = {"opsWorksStackId": process.env.OPSWORKS_STACK_ID
           , "opsWorksAppId": process.env.OPSWORKS_APP_ID
           , "monitoringTopicArn":process.env.MONITORING_TOPIC_ARN
+          , "notificationTopicArn":process.env.NOTIFICATION_TOPIC_ARN
           , "appName" : process.env.APP_NAME
           , "lbUpstreamUser": process.env.LB_UPSTREAM_USER
           , "lbUpstreamPassword": process.env.LB_UPSTREAM_PASSWORD
@@ -40,7 +41,7 @@ exports.handler = function(event, context) {
             }
         }
       }
-      
+
       config.topicArn = event.Records[0].Sns.TopicArn;
       config.messageSent = Date.parse(event.Records[0].Sns.Timestamp);
       var targetAction = actions[message.action];
