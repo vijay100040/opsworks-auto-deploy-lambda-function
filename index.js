@@ -37,9 +37,15 @@ exports.handler = function(event, context) {
         if(s3) {
             if(s3.configurationId == "ArtifactUploaded"){
               message.action = 'handleDeployment';
-              message.command = 'deploy';
+              message.command = 'prepare_staging';
             }
         }
+      }
+      // Skip processing monitoring call, if it's disabled in the configuration
+      if(message.action == 'monitorDeployment' && !process.env.MONITOR_ENABLED) {
+        console.log("Skipped processing message : %s", JSON.stringify(event, null, 2))
+        context.succeed();
+        return;
       }
 
       config.topicArn = event.Records[0].Sns.TopicArn;
