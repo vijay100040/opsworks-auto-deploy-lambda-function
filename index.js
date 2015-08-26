@@ -20,6 +20,7 @@ var config = {"opsWorksStackId": process.env.OPSWORKS_STACK_ID
           , "lbHost" : process.env.LB_HOST
           , "lbUpstreamPort" : process.env.LB_UPSTREAM_PORT
           , "artifactBucket": process.env.ARTIFACT_BUCKET
+          , "deploymentTimeout" : process.DEPOYMENT_TIMEOUT
           , "submodules" : [{"module":"frontend", "archiveName": "ui.tgz"},{"module":"backend", "archiveName":"engine.tgz"}]
         };
 
