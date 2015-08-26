@@ -19,6 +19,7 @@ var config = {"opsWorksStackId": process.env.OPSWORKS_STACK_ID
           , "lbUpstreamPassword": process.env.LB_UPSTREAM_PASSWORD
           , "lbHost" : process.env.LB_HOST
           , "lbUpstreamPort" : process.env.LB_UPSTREAM_PORT
+          , "artifactBucket": process.env.ARTIFACT_BUCKET
           , "submodules" : [{"module":"frontend", "archiveName": "ui.tgz"},{"module":"backend", "archiveName":"engine.tgz"}]
         };
 
