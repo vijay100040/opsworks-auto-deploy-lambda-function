@@ -1,4 +1,8 @@
 require("dotenv").load();
+var logger = require("winston");
+logger.level = "debug";
+logger.remove(logger.transports.Console);
+logger.add(logger.transports.Console, {"timestamp":true});
 
 var actions = {
 	"handleDeployment": require("./lib/handle_deployment.js"),
@@ -29,7 +33,7 @@ var config = {
 };
 
 exports.handler = function (event, context) {
-	//console.log("Received event:", JSON.stringify(event, null, 2));
+	//logger.debug("Received event:", JSON.stringify(event, null, 2));
 	if (event.operation) {
 		delete event.operation;
 	} else if (event.Records[0].Sns) {
@@ -48,7 +52,7 @@ exports.handler = function (event, context) {
 		}
 		// Skip processing monitoring call, if it"s disabled in the configuration
 		if (message.action === "monitorDeployment" && !process.env.MONITOR_ENABLED) {
-			console.log("Skipped processing message : %s", JSON.stringify(event, null, 2));
+			logger.debug("Skipped processing message : %s", JSON.stringify(event, null, 2));
 			context.succeed();
 			return;
 		}
