@@ -6,3 +6,5 @@ index_basic.js
 test.js
 event.json
 eventMonitor.json
+settings/prod.json
+*policy.json

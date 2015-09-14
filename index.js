@@ -1,42 +1,27 @@
-require("dotenv").load();
-var logger = require("winston");
-logger.level = "debug";
-logger.remove(logger.transports.Console);
-logger.add(logger.transports.Console, {"timestamp":true});
+var settingsLoader = require("./lib/settings.js");
+var settings = settingsLoader("./settings/prod.json");
+var loggerLoader = require("./lib/logger.js");
+
+var logger = loggerLoader(settings);
+
+// require("dotenv").load();
+// var logger = require("winston");
+// logger.level = "debug";
+// logger.remove(logger.transports.Console);
+// logger.add(logger.transports.Console, {"timestamp":true});
+// logger.add(logger.transports.Console, {"timestamp":true});
 
 var actions = {
 	"handleDeployment": require("./lib/handle_deployment.js"),
 	"monitorDeployment": require("./lib/monitor_deployment.js")
 };
 
-var config = {
-	"opsWorksStackId": process.env.OPSWORKS_STACK_ID,
-	"opsWorksAppId": process.env.OPSWORKS_APP_ID,
-	"monitoringTopicArn": process.env.MONITORING_TOPIC_ARN,
-	"notificationTopicArn": process.env.NOTIFICATION_TOPIC_ARN,
-	"handlerTopicArn": process.env.HANDLER_TOPIC_ARN,
-	"appName": process.env.APP_NAME,
-	"lbUpstreamUser": process.env.LB_UPSTREAM_USER,
-	"lbUpstreamPassword": process.env.LB_UPSTREAM_PASSWORD,
-	"lbHost": process.env.LB_HOST,
-	"lbUpstreamPort": process.env.LB_UPSTREAM_PORT,
-	"artifactBucket": process.env.ARTIFACT_BUCKET,
-	"deploymentTimeout": process.DEPLOYMENT_TIMEOUT,
-	"overrideStatusCheck": process.env.OVERRIDE_STATUS_CHECK,
-	"submodules": [{
-		"module": "frontend",
-		"archiveName": "ui.tgz"
-	}, {
-		"module": "backend",
-		"archiveName": "engine.tgz"
-	}]
-};
+var config = settings;
+
 
 exports.handler = function (event, context) {
-	//logger.debug("Received event:", JSON.stringify(event, null, 2));
-	if (event.operation) {
-		delete event.operation;
-	} else if (event.Records[0].Sns) {
+
+	if (event.Records[0].Sns) {
 		var message = JSON.parse(event.Records[0].Sns.Message);
 		if (!message.command) {
 			message.command = "deploy";
@@ -51,7 +36,7 @@ exports.handler = function (event, context) {
 			}
 		}
 		// Skip processing monitoring call, if it"s disabled in the configuration
-		if (message.action === "monitorDeployment" && !process.env.MONITOR_ENABLED) {
+		if (message.action === "monitorDeployment" && !config.monitoringEnabled) {
 			logger.debug("Skipped processing message : %s", JSON.stringify(event, null, 2));
 			context.succeed();
 			return;
