@@ -32,7 +32,7 @@ exports.handler = function (event, context) {
 				if (s3.configurationId == "ArtifactUploaded") {
 					message.action = "handleDeployment";
 					message.command = "prepare_staging";
-					message.source = "snap-ci";
+					message.source = "snap CI";
 				} else {
 					message.source = "manual";
 				}
