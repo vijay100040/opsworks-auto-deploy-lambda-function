@@ -1,7 +1,7 @@
 var settingsLoader = require("./lib/settings.js");
 var settings = settingsLoader("./settings/prod.json");
 var loggerLoader = require("./lib/logger.js");
-
+var uuid = require('uuid');
 var logger = loggerLoader(settings);
 
 // require("dotenv").load();
@@ -23,6 +23,7 @@ exports.handler = function (event, context) {
 
 	if (event.Records[0].Sns) {
 		var message = JSON.parse(event.Records[0].Sns.Message);
+		message.pipelineId = uuid.v4();
 		if (!message.command) {
 			message.command = "deploy";
 		}
